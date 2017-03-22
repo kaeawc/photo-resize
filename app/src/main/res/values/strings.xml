@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PhotoResize</string>
+    <string name="move_amp_scale"><![CDATA[Move & Scale]]></string>
+    <string name="edit_photo">Edit Photo</string>
 </resources>

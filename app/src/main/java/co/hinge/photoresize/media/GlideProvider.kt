@@ -1,4 +1,4 @@
-package co.hinge.photoresize
+package co.hinge.photoresize.media
 
 import android.content.Context
 import com.bumptech.glide.Glide

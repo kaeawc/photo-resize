@@ -1,63 +1,44 @@
-package co.hinge.photoresize
+package co.hinge.photoresize.resize
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import android.graphics.Matrix
+import co.hinge.photoresize.models.Photo
+import co.hinge.photoresize.storage.Storage
 import timber.log.Timber
-import kotlinx.android.synthetic.main.activity_main.*
-import uk.co.senab.photoview.PhotoViewAttacher
+import java.lang.ref.WeakReference
 
-class MainActivity : AppCompatActivity(), RequestListener<String, GlideDrawable> {
+open class ResizeInteractor(open val storage: Storage) {
 
-    lateinit var attacher: PhotoViewAttacher
+    var weakViewModel: WeakReference<ResizeViewModel>? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val photoUrl: String = "http://res.cloudinary.com/hinge-dev/image/upload/v1490208043/plebgn18lp4a4pzllobo.jpg"
-
-        Glide.with(baseContext)
-                .load(photoUrl)
-                .listener(this)
-                .into(selectedPhoto)
+    open fun setViewModel(viewModel: ResizeViewModel) {
+        weakViewModel = WeakReference(viewModel)
     }
 
-    override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
-        Timber.e(e, "onException")
-        return false
+    open fun destroy() {
+        weakViewModel?.clear()
     }
 
-    override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-        attacher = PhotoViewAttacher(selectedPhoto)
-        return false
+    open fun requestPhoto() {
+        val viewModel = weakViewModel?.get() ?: return
+        viewModel.onPhotoLoaded(storage.getPhoto())
     }
 
-
-    fun persistPhoto(photo: Photo, matrix: Matrix) {
+    open fun persistPhoto(photo: Photo, matrix: Matrix) {
         val boundingBox = calculateBoundingBox(photo, matrix) ?: return Timber.e("Not enough information available to create bounding box")
         if (boundingBox.size != 4) return Timber.e("Should have created 4 points for bounding box")
-        val photoIndex = photos.indexOf(photo)
-        if (photoIndex < 0 || photoIndex >= photos.size) return Timber.e("Could not find index of photo being edited")
 
-        photos[photoIndex] = photo.copy(
-                x1 = boundingBox[0],
-                y1 = boundingBox[1],
-                x2 = boundingBox[2],
-                y2 = boundingBox[3]
-        )
-        hingeApi.patchMyPhotos(photos)
+        storage.x1 = boundingBox[0]
+        storage.y1 = boundingBox[1]
+        storage.x2 = boundingBox[2]
+        storage.y2 = boundingBox[3]
     }
 
     /**
      * Given a photo where some Zoom & Pan transformations have occurred, we need to calculate a new bounding box.
      */
-    fun calculateBoundingBox(photo: Photo, matrix: Matrix): FloatArray? {
-        val imageWidth = photo.width ?: return null
-        val imageHeight = photo.height ?: return null
+    open fun calculateBoundingBox(photo: Photo, matrix: Matrix): FloatArray? {
+        val imageWidth = photo.width
+        val imageHeight = photo.height
         val values: FloatArray = (0..9).map(Int::toFloat).toFloatArray()
         matrix.getValues(values)
 
@@ -100,11 +81,15 @@ class MainActivity : AppCompatActivity(), RequestListener<String, GlideDrawable>
                 .toFloatArray()
     }
 
-    fun boundCoordinate(value: Float): Float {
+    open fun boundCoordinate(value: Float): Float {
         return Math.max(Math.min(value, 1f), 0f)
     }
 
-    fun roundToNearestHundredth(value: Float): Float {
+    open fun roundToNearestHundredth(value: Float): Float {
         return Math.round(value * 100f) / 100f
+    }
+
+    interface ResizeViewModel {
+        fun onPhotoLoaded(photo: Photo)
     }
 }

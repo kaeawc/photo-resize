@@ -1,6 +1,7 @@
 package co.hinge.photoresize
 
 import android.app.Application
+import co.hinge.photoresize.media.GlideProvider
 import okhttp3.OkHttpClient
 import timber.log.Timber
 

@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference
 
 open class MainPresenter(storage: Storage) : MainInteractor.MainViewModel {
 
-    val interactor = MainInteractor(storage)
+    open val interactor = MainInteractor(storage)
     var weakView: WeakReference<MainView>? = null
 
     open fun setView(view: MainView) {

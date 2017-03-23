@@ -1,6 +1,6 @@
 package co.hinge.photoresize.models
 
-class Photo(
+open class Photo(
         val url: String,
         val width: Int,
         val height: Int,

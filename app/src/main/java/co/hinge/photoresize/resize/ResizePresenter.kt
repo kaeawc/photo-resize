@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference
 
 open class ResizePresenter(open val storage: Storage) : ResizeInteractor.ResizeViewModel {
 
-    val interactor = ResizeInteractor(storage)
+    open val interactor = ResizeInteractor(storage)
     var weakView: WeakReference<ResizeView>? = null
 
     open fun setView(view: ResizeView) {

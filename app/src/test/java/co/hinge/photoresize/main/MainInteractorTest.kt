@@ -1,9 +1,9 @@
-package co.hinge.photoresize
+package co.hinge.photoresize.main
 
 import org.junit.Assert
 import org.junit.Test
 
-class AppTest {
+class MainInteractorTest {
 
     @Test
     fun `addition is correct`() {

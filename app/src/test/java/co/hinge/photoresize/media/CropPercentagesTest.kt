@@ -1,9 +1,9 @@
-package co.hinge.photoresize
+package co.hinge.photoresize.media
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class ExampleUnitTest {
+class CropPercentagesTest {
 
     @Test
     fun `addition is correct`() {

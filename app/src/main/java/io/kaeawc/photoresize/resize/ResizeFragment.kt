@@ -63,6 +63,8 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
     }
 
     override fun onBackPressed() {
+        if (!isVisible) return
+
         if (transitionPhoto.visibility == View.GONE) {
             val width = selectedPhoto.width
             val height = selectedPhoto.height

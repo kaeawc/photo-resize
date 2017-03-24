@@ -45,7 +45,6 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
     }
 
     override fun onBackPressed() {
-
         val fragment = fragment
         if (fragment == null) {
             super.onBackPressed()
@@ -57,8 +56,9 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
 
     fun popBackStack() {
         presenter?.loadPhoto()
-
+        fragment = null
         supportFragmentManager.popBackStack()
+        transitionPhoto.bringToFront()
 
         transitionPhoto.setOnClickListener {
             transitionPhoto.setOnClickListener(null)

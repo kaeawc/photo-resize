@@ -33,10 +33,10 @@ open class Storage(val prefs: Prefs) {
         get() = prefs.get(URL, "http://res.cloudinary.com/hinge-dev/image/upload/v1490208043/plebgn18lp4a4pzllobo.jpg")
         set(value) = prefs.set(URL, value)
     open var width: Int
-        get() = prefs.getInt(WIDTH, 0)
+        get() = prefs.getInt(WIDTH, 640)
         set(value) = prefs.set(WIDTH, value)
     open var height: Int
-        get() = prefs.getInt(HEIGhT, 0)
+        get() = prefs.getInt(HEIGhT, 640)
         set(value) = prefs.set(HEIGhT, value)
 
     open fun getPhoto(): Photo {

@@ -7,7 +7,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "co.hinge.photoresize"
+        applicationId "io.kaeawc.photoresize"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1

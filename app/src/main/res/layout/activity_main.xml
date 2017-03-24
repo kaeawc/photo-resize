@@ -7,12 +7,12 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/transitionPhoto"
         android:transitionName="photo"
-        android:id="@+id/selectedPhoto"
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:src="@color/colorAccent"
-        android:scaleType="center"
+        android:scaleType="matrix"
         android:contentDescription="@null"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintLeft_toLeftOf="parent"

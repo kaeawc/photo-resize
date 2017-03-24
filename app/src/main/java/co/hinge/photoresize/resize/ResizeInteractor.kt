@@ -23,14 +23,19 @@ open class ResizeInteractor(open val storage: Storage) {
         viewModel.onPhotoLoaded(storage.getPhoto())
     }
 
-    open fun persistPhoto(photo: Photo, matrix: Matrix) {
+    open fun persistPhoto(photo: Photo, width: Int, height: Int, matrix: Matrix) {
         val boundingBox = calculateBoundingBox(photo, matrix) ?: return Timber.e("Not enough information available to create bounding box")
         if (boundingBox.size != 4) return Timber.e("Should have created 4 points for bounding box")
 
+        storage.width = width
+        storage.height = height
         storage.x1 = boundingBox[0]
         storage.y1 = boundingBox[1]
         storage.x2 = boundingBox[2]
         storage.y2 = boundingBox[3]
+
+        val viewModel = weakViewModel?.get() ?: return
+        viewModel.onPhotoUpdated(storage.getPhoto())
     }
 
     /**
@@ -91,5 +96,6 @@ open class ResizeInteractor(open val storage: Storage) {
 
     interface ResizeViewModel {
         fun onPhotoLoaded(photo: Photo)
+        fun onPhotoUpdated(photo: Photo)
     }
 }

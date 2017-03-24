@@ -12,6 +12,9 @@ open class MainPresenter(storage: Storage) : MainInteractor.MainViewModel {
     open fun setView(view: MainView) {
         weakView = WeakReference(view)
         interactor.setViewModel(this)
+    }
+
+    open fun loadPhoto() {
         interactor.requestPhoto()
     }
 

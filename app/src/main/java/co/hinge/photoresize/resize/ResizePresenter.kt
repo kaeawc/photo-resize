@@ -1,5 +1,6 @@
 package co.hinge.photoresize.resize
 
+import android.graphics.Matrix
 import co.hinge.photoresize.models.Photo
 import co.hinge.photoresize.storage.Storage
 import java.lang.ref.WeakReference
@@ -15,7 +16,8 @@ open class ResizePresenter(open val storage: Storage) : ResizeInteractor.ResizeV
         interactor.requestPhoto()
     }
 
-    open fun destroy() {
+    open fun onExit(photo: Photo, width: Int, height: Int, matrix: Matrix) {
+        interactor.persistPhoto(photo, width, height, matrix)
         weakView?.clear()
     }
 
@@ -24,7 +26,13 @@ open class ResizePresenter(open val storage: Storage) : ResizeInteractor.ResizeV
         view.showPhoto(photo)
     }
 
+    override fun onPhotoUpdated(photo: Photo) {
+        val view = weakView?.get() ?: return
+        view.returnUpdatedPhoto(photo)
+    }
+
     interface ResizeView {
         fun showPhoto(photo: Photo)
+        fun returnUpdatedPhoto(photo: Photo)
     }
 }

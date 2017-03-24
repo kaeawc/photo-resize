@@ -111,4 +111,4 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
                 .addToBackStack(null)
                 .commit()
     }
-}git adq
+}

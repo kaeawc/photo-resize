@@ -1,36 +1,29 @@
 package io.kaeawc.photoresize.resize
 
-import android.animation.ValueAnimator
-import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.graphics.Matrix
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.view.Window
-import io.kaeawc.photoresize.models.Photo
-import io.kaeawc.photoresize.R
-import io.kaeawc.photoresize.main.MainActivity
-import io.kaeawc.photoresize.storage.Prefs
-import io.kaeawc.photoresize.storage.Storage
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import io.kaeawc.photoresize.R
+import io.kaeawc.photoresize.main.MainActivity
+import io.kaeawc.photoresize.models.Photo
+import io.kaeawc.photoresize.storage.Prefs
+import io.kaeawc.photoresize.storage.Storage
 import kotlinx.android.synthetic.main.activity_resize.*
 import timber.log.Timber
 import uk.co.senab.photoview.PhotoViewAttacher
 import java.lang.reflect.Field
-import android.transition.Explode
-import android.transition.Fade
 
-
-class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
+class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
 
     lateinit var attacher: PhotoViewAttacher
     lateinit var presenter: ResizePresenter
@@ -43,33 +36,30 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_resize)
-
-        if (sharedElementTransitions()) {
-            postponeEnterTransition()
-
-            val decor = window.decorView
-            decor.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    decor.viewTreeObserver.removeOnPreDrawListener(this)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        startPostponedEnterTransition()
-                    }
-                    return true
-                }
-            })
-        }
+        postponeEnterTransition()
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter = ResizePresenter(Storage(Prefs(baseContext.getSharedPreferences("app", Context.MODE_PRIVATE))))
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.activity_resize, container, false)
+        view.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                view.viewTreeObserver.removeOnPreDrawListener(this)
+                activity.startPostponedEnterTransition()
+                return true
+            }
+        })
+
+        return view
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        presenter = ResizePresenter(Storage(Prefs(context.getSharedPreferences("app", Context.MODE_PRIVATE))))
         presenter.setView(this)
     }
 
+
     fun sharedElementTransitions(): Boolean {
-//        return false
-         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
     }
 
     override fun onBackPressed() {
@@ -86,18 +76,7 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
 
     override fun returnUpdatedPhoto(photo: Photo) {
 
-        if (!sharedElementTransitions()) {
-            super.onBackPressed()
-        } else {
-            val resultIntent = Intent()
-            resultIntent.putExtra("url", photo.url)
-            resultIntent.putExtra("width", photo.width)
-            resultIntent.putExtra("height", photo.height)
-            resultIntent.putExtra("x1", photo.x1)
-            resultIntent.putExtra("y1", photo.y1)
-            resultIntent.putExtra("x2", photo.x2)
-            resultIntent.putExtra("y2", photo.y2)
-            setResult(Activity.RESULT_OK, resultIntent)
+        if (sharedElementTransitions()) {
 
             if (transitionPhoto.visibility == View.GONE) {
                 transitionPhoto.imageMatrix = attacher.imageView.imageMatrix
@@ -105,7 +84,10 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
                 selectedPhoto.visibility = View.GONE
             }
 
-            finish()
+            val activity = activity
+            if (activity is MainActivity) {
+                activity.popBackStack()
+            }
         }
     }
 
@@ -117,7 +99,7 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
         translateX = -(photo.width * photo.x1)
         translateY = -(photo.height * photo.y1)
 
-        Glide.with(baseContext)
+        Glide.with(context)
                 .load(photo.url)
                 .listener(object: RequestListener<String, GlideDrawable> {
                     override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
@@ -135,7 +117,7 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
                 })
                 .into(transitionPhoto)
 
-        Glide.with(baseContext)
+        Glide.with(context)
                 .load(photo.url)
                 .listener(object: RequestListener<String, GlideDrawable> {
                     override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
@@ -151,8 +133,6 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
                             matrix.postTranslate(translateX, translateY)
                             matrix.postScale(scale, scale, 0f, 0f)
                             selectedPhoto.imageMatrix = matrix
-//                            setPhotoViewMatrix(matrix, "mBaseMatrix")
-//                            setPhotoViewMatrix(matrix, "mDrawMatrix")
                             setPhotoViewMatrix(matrix, "mSuppMatrix")
                             transitionPhoto.visibility = View.GONE
                         }, 500)
@@ -170,7 +150,6 @@ class ResizeActivity : AppCompatActivity(), ResizePresenter.ResizeView {
             field.isAccessible = true
             field.set(attacher, matrix)
             field.isAccessible = false
-            Timber.i("Successfully set PhotoViewMatrix")
             true
         } catch (ex: NoSuchFieldException) {
             Timber.e(ex, "Could not set PhotoViewMatrix")

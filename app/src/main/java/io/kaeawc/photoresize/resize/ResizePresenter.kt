@@ -34,5 +34,6 @@ open class ResizePresenter(open val storage: Storage) : ResizeInteractor.ResizeV
     interface ResizeView {
         fun showPhoto(photo: Photo)
         fun returnUpdatedPhoto(photo: Photo)
+        fun onBackPressed()
     }
 }

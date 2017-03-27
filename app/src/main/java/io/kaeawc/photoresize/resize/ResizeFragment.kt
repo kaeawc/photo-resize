@@ -17,6 +17,8 @@ import com.bumptech.glide.request.target.Target
 import io.kaeawc.photoresize.R
 import io.kaeawc.photoresize.main.MainActivity
 import io.kaeawc.photoresize.models.Photo
+import io.kaeawc.photoresize.select.PhotoSelectSources
+import io.kaeawc.photoresize.select.PhotoSelectViewPagerAdapter
 import io.kaeawc.photoresize.storage.Prefs
 import io.kaeawc.photoresize.storage.Storage
 import kotlinx.android.synthetic.main.activity_resize.*

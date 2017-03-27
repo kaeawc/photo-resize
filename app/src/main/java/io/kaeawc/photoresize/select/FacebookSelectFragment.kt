@@ -1,4 +1,4 @@
-package io.kaeawc.photoresize.resize
+package io.kaeawc.photoresize.select
 
 import android.support.v7.widget.RecyclerView
 import kotlinx.android.synthetic.main.photo_select_facebook.*

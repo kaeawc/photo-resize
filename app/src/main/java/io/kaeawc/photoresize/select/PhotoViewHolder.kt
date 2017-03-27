@@ -1,4 +1,4 @@
-package io.kaeawc.photoresize.resize
+package io.kaeawc.photoresize.select
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

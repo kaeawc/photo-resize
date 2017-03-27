@@ -1,4 +1,4 @@
-package io.kaeawc.photoresize.resize
+package io.kaeawc.photoresize.select
 
 import android.graphics.Point
 import android.os.Bundle
@@ -77,6 +77,7 @@ abstract class PhotoSelectFragment : Fragment() {
         data.forEach {
             Timber.i("${it.first} -> ${it.second.url}")
         }
+
         recyclerView.layoutManager = GridLayoutManager(context, columnCount, GridLayoutManager.VERTICAL, false)
         recyclerView.adapter = PhotoSelectGridAdapter(context, data)
         recyclerView.isNestedScrollingEnabled = false

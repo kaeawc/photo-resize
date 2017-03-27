@@ -9,5 +9,6 @@
     <string name="connect_your_instagram">Connect your instagram to get access to your posted photos.</string>
     <string name="connect">Connect</string>
     <string name="select_gallery_photo">Select a photo from your phone.</string>
+    <string name="photo_gallery">Photo Gallery</string>
 
 </resources>

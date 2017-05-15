@@ -15,6 +15,7 @@
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/MyCustomTextAppearance</item>
+        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">

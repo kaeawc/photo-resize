@@ -145,7 +145,7 @@
         app:behavior_overlapTop="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -165,11 +165,10 @@
                 android:id="@+id/photoSelectViewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/photoTabLayout"
                 android:overScrollMode="never"
                 android:scrollbars="none"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

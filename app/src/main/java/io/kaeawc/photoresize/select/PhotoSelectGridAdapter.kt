@@ -8,13 +8,17 @@ import io.kaeawc.photoresize.R
 import io.kaeawc.photoresize.models.Photo
 import java.lang.ref.WeakReference
 
-class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, Photo>>) : RecyclerView.Adapter<PhotoViewHolder>() {
+class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, Photo>>, currentlySelected: Photo? = null) : RecyclerView.Adapter<PhotoViewHolder>() {
 
     var weakContext: WeakReference<Context>? = WeakReference(context)
-    var photoSelected: Int? = null
+    var selectedPhoto: Photo? = currentlySelected
 
     init {
         setHasStableIds(true)
+        val selected = data.filter { it.second.url == selectedPhoto?.url }.firstOrNull()
+        if (selected != null) {
+            data.remove(selected)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PhotoViewHolder {
@@ -41,13 +45,15 @@ class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, 
     }
 
     fun changePhotoSelected(position: Int) {
-        val lastPosition = photoSelected
+        val previouslySelected = selectedPhoto
         data[position].second.selected = true
-        photoSelected = position
+        selectedPhoto = data[position].second
 
-        if (lastPosition != null) {
-            data[lastPosition].second.selected = false
-            notifyItemChanged(lastPosition)
+        if (previouslySelected != null) {
+            data[position] = Pair(data[position].first, previouslySelected)
+            notifyItemChanged(position)
+        } else {
+            notifyItemRemoved(position)
         }
 
         notifyItemChanged(position)

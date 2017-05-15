@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Matrix
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -30,17 +31,20 @@ import java.lang.reflect.Field
 class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
 
     companion object {
-        const val DELAY_PHOTO_VIEW_ATTACHMENT: Long = 500
+        const val DELAY_PHOTO_VIEW_ATTACHMENT: Long = 250
     }
 
     lateinit var attacher: PhotoViewAttacher
     lateinit var presenter: ResizePresenter
     lateinit var photo: Photo
 
+    var handler: Handler? = null
+
     var scale: Float = 1f
     var translateX: Float = 0f
     var translateY: Float = 0f
-    val matrix = Matrix()
+    val transitionMatrix = Matrix()
+    val zoomAndPanMatrix = Matrix()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +72,8 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
         photoTabLayout.setupWithViewPager(photoSelectViewPager)
         photoSelectViewPager.isNestedScrollingEnabled = false
 
+        handler = Handler()
+
         (0..photoTabLayout.tabCount - 1).forEach {
             val drawableRes = PhotoSelectSources.getByPosition(it)?.getDrawableId() ?: return@forEach
             val drawable = ContextCompat.getDrawable(context, drawableRes)
@@ -82,15 +88,14 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
     override fun onBackPressed() {
         if (!isVisible) return
 
-        if (transitionPhoto.visibility == View.GONE) {
-            val width = zoomAndPanPhoto.width
-            val height = zoomAndPanPhoto.height
-            presenter.onExit(photo, width, height, zoomAndPanPhoto.imageMatrix)
-        } else {
-            val width = transitionPhoto.width
-            val height = transitionPhoto.height
-            presenter.onExit(photo, width, height, transitionPhoto.imageMatrix)
+        val source: ImageView = when (transitionPhoto.visibility) {
+            View.VISIBLE -> transitionPhoto
+            else -> zoomAndPanPhoto
         }
+
+        val width = source.width
+        val height = source.height
+        presenter.onExit(photo, width, height, source.imageMatrix)
     }
 
     override fun returnUpdatedPhoto(photo: Photo) {
@@ -145,10 +150,10 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
                     }
 
                     override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                        matrix.reset()
-                        matrix.postTranslate(translateX, translateY)
-                        matrix.postScale(scale, scale, 0f, 0f)
-                        transitionPhoto.imageMatrix = matrix
+                        transitionMatrix.reset()
+                        transitionMatrix.postTranslate(translateX, translateY)
+                        transitionMatrix.postScale(scale, scale, 0f, 0f)
+                        transitionPhoto.imageMatrix = transitionMatrix
                         return false
                     }
                 })
@@ -164,11 +169,7 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
 
                     override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                         attacher = PhotoViewAttacher(zoomAndPanPhoto)
-
-                        zoomAndPanPhoto.postDelayed({
-                            onZoomAndPanImageViewReady()
-                        }, DELAY_PHOTO_VIEW_ATTACHMENT)
-
+                        onZoomAndPanImageViewReady()
                         return false
                     }
                 })
@@ -176,13 +177,15 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
     }
 
     fun onZoomAndPanImageViewReady() {
-//        if (!isVisible) return
-//        matrix.reset()
-//        matrix.postTranslate(translateX, translateY)
-//        matrix.postScale(scale, scale, 0f, 0f)
-//        zoomAndPanPhoto.imageMatrix = matrix
-//        setPhotoViewMatrix(matrix, "mSuppMatrix")
-//        transitionPhoto.visibility = View.GONE
+        handler?.postDelayed({
+            if (!isVisible) return@postDelayed
+            zoomAndPanMatrix.reset()
+            zoomAndPanMatrix.postTranslate(translateX, translateY)
+            zoomAndPanMatrix.postScale(scale, scale, 0f, 0f)
+            setPhotoViewMatrix(zoomAndPanMatrix, "mSuppMatrix")
+            zoomAndPanPhoto.imageMatrix = zoomAndPanMatrix
+            transitionPhoto.visibility = View.INVISIBLE
+        }, DELAY_PHOTO_VIEW_ATTACHMENT)
     }
 
     fun setPhotoViewMatrix(matrix: Matrix, fieldName: String): Boolean {

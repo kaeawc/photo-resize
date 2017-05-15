@@ -30,21 +30,5 @@ class PhotoSelectViewPagerAdapter(context: Context, fragmentManager: FragmentMan
 
     override fun getPageTitle(position: Int): CharSequence {
         return ""
-//        val screen = PhotoSelectSources.getByPosition(position)
-//        val context = weakContext?.get() ?: return ""
-//
-//        return when {
-//            screen != null -> screen.getTitle(context)
-//            else -> ""
-//        }
-
-//        val image = ContextCompat.getDrawable(context, R.drawable.ic_facebook_active)
-//        Timber.i("Found image: $image | image.intrinsicWidth: ${image.intrinsicWidth}, image.intrinsicHeight: ${image.intrinsicHeight}")
-//        image.setBounds(0, 0, image.intrinsicWidth, image.intrinsicHeight)
-//        val sb = SpannableString(" ")
-//        val imageSpan = ImageSpan(image, ImageSpan.ALIGN_BOTTOM)
-//        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        Timber.i("Image span: $sb")
-//        return sb
     }
 }

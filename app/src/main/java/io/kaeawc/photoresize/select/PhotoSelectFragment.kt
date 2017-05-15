@@ -50,7 +50,7 @@ abstract class PhotoSelectFragment : Fragment(), PhotoSelectPresenter.View {
         presenter.destroy()
     }
 
-    override fun changePhotoSelected(position: Int) {
+    override fun onPhotoSelected(position: Int) {
         adapter.changePhotoSelected(position)
     }
 

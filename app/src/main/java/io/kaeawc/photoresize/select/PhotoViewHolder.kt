@@ -14,15 +14,18 @@ import timber.log.Timber
 
 class PhotoViewHolder(val view: View) : RecyclerView.ViewHolder(view), RequestListener<String, GlideDrawable> {
 
-    var photoImage: ImageView? = view.findViewById(R.id.photoSelectImage) as ImageView?
+    val photoImage: ImageView? by lazy { view.findViewById(R.id.photoSelectImage) as? ImageView? }
 
     fun bindData(context: Context, photo: Photo) {
-        if (photoImage != null) {
-            Glide.with(context)
-                    .load(photo.url)
-                    .centerCrop()
-                    .listener(this)
-                    .into(photoImage)
+        if (photoImage == null) return
+        Glide.with(context)
+                .load(photo.url)
+                .centerCrop()
+                .listener(this)
+                .into(photoImage)
+
+        photoImage?.setOnClickListener {
+            onPhotoTapped(photo)
         }
     }
 
@@ -33,5 +36,9 @@ class PhotoViewHolder(val view: View) : RecyclerView.ViewHolder(view), RequestLi
 
     override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
         return false
+    }
+
+    fun onPhotoTapped(photo: Photo) {
+        // pass event to eventbus
     }
 }

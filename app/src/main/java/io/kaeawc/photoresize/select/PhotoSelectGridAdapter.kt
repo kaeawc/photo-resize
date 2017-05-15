@@ -15,10 +15,6 @@ class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, 
 
     init {
         setHasStableIds(true)
-        val selected = data.filter { it.second.url == selectedPhoto?.url }.firstOrNull()
-        if (selected != null) {
-            data.remove(selected)
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PhotoViewHolder {

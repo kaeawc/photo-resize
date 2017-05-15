@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.github.chrisbanes.photoview.PhotoViewAttacher
 import io.kaeawc.photoresize.resize.ResizeFragment
 import timber.log.Timber
 import kotlinx.android.synthetic.main.activity_main.*
@@ -105,9 +104,9 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
 
     fun routeToEdit() {
         fragment = ResizeFragment()
-        val transation = supportFragmentManager.beginTransaction()
-        if (sharedElementTransitions()) transation.addSharedElement(transitionPhoto, "photo")
-        transation.replace(R.id.container, fragment)
+        val transaction = supportFragmentManager.beginTransaction()
+        if (sharedElementTransitions()) transaction.addSharedElement(transitionPhoto, "photo")
+        transaction.replace(R.id.container, fragment)
                 .addToBackStack(null)
                 .commit()
     }

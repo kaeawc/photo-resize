@@ -13,10 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.github.chrisbanes.photoview.PhotoViewAttacher
 import io.kaeawc.photoresize.resize.ResizeFragment
 import timber.log.Timber
 import kotlinx.android.synthetic.main.activity_main.*
-import uk.co.senab.photoview.PhotoViewAttacher
 
 class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>, MainPresenter.MainView {
 
@@ -68,7 +68,7 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
     }
 
     override fun showPhoto(photo: Photo) {
-        scale = Math.min(Math.max(1f / (photo.x2 - photo.x1), 0f), PhotoViewAttacher.DEFAULT_MAX_SCALE)
+        scale = Math.min(Math.max(1f / (photo.x2 - photo.x1), 0f), 3.0f)
         translateX = -Math.max(Math.min(photo.width * photo.x1, photo.width.toFloat()), 0f)
         translateY = -Math.max(Math.min(photo.height * photo.y1, photo.height.toFloat()), 0f)
 

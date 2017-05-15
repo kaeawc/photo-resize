@@ -14,7 +14,7 @@ open class MainPresenter(storage: Storage) : MainInteractor.MainViewModel {
         interactor.setViewModel(this)
     }
 
-    open fun loadPhoto() {
+    open fun requestPhoto() {
         interactor.requestPhoto()
     }
 

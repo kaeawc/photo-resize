@@ -1,7 +1,6 @@
 package io.kaeawc.photoresize.main
 
 import io.kaeawc.photoresize.models.Photo
-import io.kaeawc.photoresize.storage.Storage
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -23,6 +22,7 @@ class MainPresenterTest {
         MockitoAnnotations.initMocks(this)
         whenever(presenter.interactor).thenReturn(interactor)
         whenever(presenter.setView(eq(view))).thenCallRealMethod()
+        whenever(presenter.requestPhoto()).thenCallRealMethod()
         whenever(presenter.destroy()).thenCallRealMethod()
         whenever(presenter.onPhotoLoaded(eq(photo))).thenCallRealMethod()
     }
@@ -30,6 +30,12 @@ class MainPresenterTest {
     @Test
     fun `setting the view triggers requesting a photo`() {
         presenter.setView(view)
+        verify(interactor, times(1)).setViewModel(eq(presenter))
+    }
+
+    @Test
+    fun `request photo triggers interactor request`() {
+        presenter.requestPhoto()
         verify(interactor, times(1)).requestPhoto()
     }
 

@@ -39,7 +39,7 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
         if (presenter == null) {
             presenter = MainPresenter(storage)
             presenter?.setView(this)
-            presenter?.loadPhoto()
+            presenter?.requestPhoto()
         }
     }
 
@@ -54,7 +54,7 @@ class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>,
     }
 
     fun popBackStack() {
-        presenter?.loadPhoto()
+        presenter?.requestPhoto()
         fragment = null
         supportFragmentManager.popBackStack()
         transitionPhoto.bringToFront()

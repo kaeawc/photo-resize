@@ -40,10 +40,10 @@ abstract class PhotoSelectInteractor {
                 "https://scontent.xx.fbcdn.net/v/t1.0-9/13240153_10100335087075160_1315439773619025638_n.jpg?oh=8bb24869fa2a79d7162a42dc661d3e36&oe=5976D996"
         )
 
-        return (0..photoCount).map {
+        return (0..photoCount).mapIndexed {
+            index, _ ->
             val gridId = Math.abs(Random().nextLong())
             val url = urls[Random().nextInt(4)]
-            Timber.i("url: $url")
             val photo = Photo(
                     url = url,
                     width = 0,
@@ -51,7 +51,8 @@ abstract class PhotoSelectInteractor {
                     x1 = 0f,
                     y1 = 0f,
                     x2 = 0f,
-                    y2 = 0f
+                    y2 = 0f,
+                    selected = index == 0
             )
             gridId to photo
         }

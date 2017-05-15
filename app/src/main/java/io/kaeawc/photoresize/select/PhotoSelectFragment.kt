@@ -32,7 +32,9 @@ abstract class PhotoSelectFragment : Fragment(), PhotoSelectPresenter.View {
 
     override fun showPhotos(photos: List<Pair<Long, Photo>>) {
         val recyclerView = getPhotoRecyclerView()
-        adapter = PhotoSelectGridAdapter(context, photos.toMutableList())
+        val data = photos.filter { !it.second.selected }.toMutableList()
+        val selectedPhoto = photos.map { it.second }.filter {it.selected}.firstOrNull()
+        adapter = PhotoSelectGridAdapter(context, data, selectedPhoto)
         recyclerView.adapter = adapter
         recyclerView.isNestedScrollingEnabled = false
         recyclerView.adapter.notifyDataSetChanged()

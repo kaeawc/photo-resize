@@ -30,7 +30,7 @@ open class Storage(val prefs: Prefs) {
         set(value) = prefs.set(Y2, value)
 
     open var url: String
-        get() = prefs.get(URL, "http://res.cloudinary.com/hinge-dev/image/upload/v1490208043/plebgn18lp4a4pzllobo.jpg")
+        get() = prefs.get(URL, "https://scontent.xx.fbcdn.net/v/t31.0-8/16602040_10100460351134980_9180327545299035667_o.jpg?oh=53f48150930bb377ab9bf830879f2c90&oe=59BB94CE")
         set(value) = prefs.set(URL, value)
     open var width: Int
         get() = prefs.getInt(WIDTH, 640)

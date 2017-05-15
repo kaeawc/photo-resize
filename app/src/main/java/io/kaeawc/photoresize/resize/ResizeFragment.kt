@@ -64,13 +64,13 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
         presenter.setView(this)
 
         photoSelectViewPager.adapter = PhotoSelectViewPagerAdapter(context, fragmentManager)
-        photoTablLayout.setupWithViewPager(photoSelectViewPager)
+        photoTabLayout.setupWithViewPager(photoSelectViewPager)
         photoSelectViewPager.isNestedScrollingEnabled = false
 
-        (0..photoTablLayout.tabCount - 1).forEach {
+        (0..photoTabLayout.tabCount - 1).forEach {
             val drawableRes = PhotoSelectSources.getByPosition(it)?.getDrawableId() ?: return@forEach
             val drawable = ContextCompat.getDrawable(context, drawableRes)
-            photoTablLayout.getTabAt(it)?.icon = drawable
+            photoTabLayout.getTabAt(it)?.icon = drawable
         }
     }
 

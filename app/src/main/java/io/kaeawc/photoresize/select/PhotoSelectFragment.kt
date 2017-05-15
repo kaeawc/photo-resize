@@ -67,6 +67,6 @@ abstract class PhotoSelectFragment : Fragment(), PhotoSelectPresenter.View {
         recyclerView.layoutManager = GridLayoutManager(context, columnCount, GridLayoutManager.VERTICAL, false)
         adapter = PhotoSelectGridAdapter(context, mutableListOf<Pair<Long, Photo>>())
         recyclerView.adapter = adapter
-        recyclerView.isNestedScrollingEnabled = false
+        //recyclerView.isNestedScrollingEnabled = false
     }
 }

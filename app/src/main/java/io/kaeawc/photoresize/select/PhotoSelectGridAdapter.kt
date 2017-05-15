@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference
 class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, Photo>>) : RecyclerView.Adapter<PhotoViewHolder>() {
 
     var weakContext: WeakReference<Context>? = WeakReference(context)
+    var photoSelected: Int? = null
 
     init {
         setHasStableIds(true)
@@ -34,10 +35,22 @@ class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, 
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        Timber.i("onBindViewHolder position $position")
         if (position < 0 || position >= data.size) return
         val item = data[position]
         val context = weakContext?.get() ?: return
         holder.bindData(context, item.second)
+    }
+
+    fun changePhotoSelected(position: Int) {
+        val lastPosition = photoSelected
+        data[position].second.selected = true
+        photoSelected = position
+
+        if (lastPosition != null) {
+            data[lastPosition].second.selected = false
+            notifyItemChanged(lastPosition)
+        }
+
+        notifyItemChanged(position)
     }
 }

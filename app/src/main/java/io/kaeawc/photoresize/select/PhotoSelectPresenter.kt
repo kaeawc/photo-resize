@@ -20,13 +20,18 @@ abstract class PhotoSelectPresenter : PhotoSelectInteractor.ViewModel {
         view.showPhotos(photos)
     }
 
-    override fun onPhotoSelected(photo: Photo) {
+    override fun onPhotoSelected(position: Int) {
         val view = weakView?.get() ?: return
-        view.changePhotoSelected(photo)
+        view.changePhotoSelected(position)
+    }
+
+    fun destroy() {
+        interactor.destroy()
+        weakView?.clear()
     }
 
     interface View {
         fun showPhotos(photos: List<Pair<Long, Photo>>)
-        fun changePhotoSelected(photo: Photo?)
+        fun changePhotoSelected(position: Int)
     }
 }

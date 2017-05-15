@@ -10,6 +10,9 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import io.kaeawc.photoresize.R
+import io.kaeawc.photoresize.select.facebook.FacebookSelectFragment
+import io.kaeawc.photoresize.select.gallery.GallerySelectFragment
+import io.kaeawc.photoresize.select.instagram.InstagramSelectFragment
 import timber.log.Timber
 import java.lang.ref.WeakReference
 

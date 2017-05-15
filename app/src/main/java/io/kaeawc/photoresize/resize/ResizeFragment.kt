@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
@@ -97,8 +98,10 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
         if (sharedElementTransitions()) {
 
             if (transitionPhoto.visibility == View.GONE) {
-                // TODO: mImageView is private, need to find a way to get image matrix
-                //transitionPhoto.imageMatrix = attacher.imageView.imageMatrix
+                val imageView = getPhotoViewImage()
+                if (imageView != null) {
+                    transitionPhoto.imageMatrix = imageView.imageMatrix
+                }
                 transitionPhoto.visibility = View.VISIBLE
                 zoomAndPanPhoto.visibility = View.GONE
             }
@@ -107,6 +110,21 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
             if (activity is MainActivity) {
                 activity.popBackStack()
             }
+        }
+    }
+
+    fun getPhotoViewImage(): ImageView? {
+
+        return try {
+            val imageView = attacher.javaClass.getDeclaredField("mImageView")
+            imageView.isAccessible = true
+            imageView.get(attacher) as ImageView
+        } catch (e: NoSuchFieldException) {
+            Timber.e(e, "Could not get ImageView from PhotoViewAttacher")
+            null
+        } catch (e: IllegalAccessException) {
+            Timber.e(e, "Could not get ImageView from PhotoViewAttacher")
+            null
         }
     }
 
@@ -158,13 +176,13 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
     }
 
     fun onZoomAndPanImageViewReady() {
-        if (!isVisible) return
-        matrix.reset()
-        matrix.postTranslate(translateX, translateY)
-        matrix.postScale(scale, scale, 0f, 0f)
-        zoomAndPanPhoto.imageMatrix = matrix
-        setPhotoViewMatrix(matrix, "mSuppMatrix")
-        transitionPhoto.visibility = View.GONE
+//        if (!isVisible) return
+//        matrix.reset()
+//        matrix.postTranslate(translateX, translateY)
+//        matrix.postScale(scale, scale, 0f, 0f)
+//        zoomAndPanPhoto.imageMatrix = matrix
+//        setPhotoViewMatrix(matrix, "mSuppMatrix")
+//        transitionPhoto.visibility = View.GONE
     }
 
     fun setPhotoViewMatrix(matrix: Matrix, fieldName: String): Boolean {

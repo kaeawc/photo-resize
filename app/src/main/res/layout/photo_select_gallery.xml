@@ -7,10 +7,10 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/select_gallery_photo"
+        android:id="@+id/connect_your_instagram"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/select_gallery_photo"
+        android:text="@string/connect_your_instagram"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/connect_button"
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/photo_gallery"
+            android:text="@string/connect"
             android:textAllCaps="true"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"/>

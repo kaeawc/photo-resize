@@ -1,7 +1,6 @@
 package io.kaeawc.photoresize.select
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -12,7 +11,7 @@ import io.kaeawc.photoresize.R
 import io.kaeawc.photoresize.models.Photo
 import timber.log.Timber
 
-class PhotoViewHolder(val view: View) : RecyclerView.ViewHolder(view), RequestListener<String, GlideDrawable> {
+class PhotoViewHolder(view: View) : GalleryViewHolder(view), RequestListener<String, GlideDrawable> {
 
     val photoImage: ImageView? by lazy { view.findViewById(R.id.photoSelectImage) as? ImageView? }
 

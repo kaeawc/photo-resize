@@ -1,19 +1,12 @@
 package io.kaeawc.photoresize.select
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.content.ContextCompat
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ImageSpan
-import io.kaeawc.photoresize.R
 import io.kaeawc.photoresize.select.facebook.FacebookSelectFragment
 import io.kaeawc.photoresize.select.gallery.GallerySelectFragment
 import io.kaeawc.photoresize.select.instagram.InstagramSelectFragment
-import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class PhotoSelectViewPagerAdapter(context: Context, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {

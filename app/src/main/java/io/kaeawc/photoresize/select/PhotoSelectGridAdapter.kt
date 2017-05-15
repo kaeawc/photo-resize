@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import io.kaeawc.photoresize.R
 import io.kaeawc.photoresize.models.Photo
-import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class PhotoSelectGridAdapter(context: Context, val data: MutableList<Pair<Long, Photo>>) : RecyclerView.Adapter<PhotoViewHolder>() {

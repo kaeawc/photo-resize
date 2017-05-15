@@ -1,7 +1,6 @@
 package io.kaeawc.photoresize.select
 
 import io.kaeawc.photoresize.models.Photo
-import io.kaeawc.photoresize.resize.ResizeInteractor
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.util.*

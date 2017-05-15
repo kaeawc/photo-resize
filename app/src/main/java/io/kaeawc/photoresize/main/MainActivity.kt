@@ -5,17 +5,17 @@ import android.graphics.Matrix
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
-import io.kaeawc.photoresize.R
-import io.kaeawc.photoresize.models.Photo
-import io.kaeawc.photoresize.storage.Prefs
-import io.kaeawc.photoresize.storage.Storage
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import io.kaeawc.photoresize.R
+import io.kaeawc.photoresize.models.Photo
 import io.kaeawc.photoresize.resize.ResizeFragment
-import timber.log.Timber
+import io.kaeawc.photoresize.storage.Prefs
+import io.kaeawc.photoresize.storage.Storage
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : FragmentActivity(), RequestListener<String, GlideDrawable>, MainPresenter.MainView {
 

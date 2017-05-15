@@ -1,11 +1,7 @@
 package io.kaeawc.photoresize.resize
 
 import io.kaeawc.photoresize.models.Photo
-import io.kaeawc.photoresize.storage.Storage
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -23,7 +19,7 @@ class ResizePresenterTest {
         MockitoAnnotations.initMocks(this)
         whenever(presenter.interactor).thenReturn(interactor)
         whenever(presenter.setView(eq(view))).thenCallRealMethod()
-        whenever(presenter.destroy()).thenCallRealMethod()
+        whenever(presenter.onExit(any(), any(), any(), any())).thenCallRealMethod()
         whenever(presenter.onPhotoLoaded(eq(photo))).thenCallRealMethod()
     }
 

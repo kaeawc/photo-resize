@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.github.chrisbanes.photoview.PhotoViewAttacher
 import io.kaeawc.photoresize.R
 import io.kaeawc.photoresize.main.MainActivity
 import io.kaeawc.photoresize.models.Photo
@@ -20,7 +21,6 @@ import io.kaeawc.photoresize.storage.Prefs
 import io.kaeawc.photoresize.storage.Storage
 import kotlinx.android.synthetic.main.activity_resize.*
 import timber.log.Timber
-import uk.co.senab.photoview.PhotoViewAttacher
 import java.lang.reflect.Field
 
 class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
@@ -81,7 +81,8 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
         if (sharedElementTransitions()) {
 
             if (transitionPhoto.visibility == View.GONE) {
-                transitionPhoto.imageMatrix = attacher.imageView.imageMatrix
+                // TODO: mImageView is private, need to find a way to get image matrix
+                //transitionPhoto.imageMatrix = attacher.imageView.imageMatrix
                 transitionPhoto.visibility = View.VISIBLE
                 selectedPhoto.visibility = View.GONE
             }
@@ -97,7 +98,7 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
 
         this.photo = photo
 
-        scale = Math.min(Math.max(1f / (photo.x2 - photo.x1), 0f), PhotoViewAttacher.DEFAULT_MAX_SCALE)
+        scale = Math.min(Math.max(1f / (photo.x2 - photo.x1), 0f), 3.0f)
         translateX = -(photo.width * photo.x1)
         translateY = -(photo.height * photo.y1)
 

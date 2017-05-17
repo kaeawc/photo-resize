@@ -68,7 +68,7 @@ class ResizeFragment : Fragment(), ResizePresenter.ResizeView {
         presenter = ResizePresenter(Storage(Prefs(context.getSharedPreferences("app", Context.MODE_PRIVATE))))
         presenter.setView(this)
 
-        photoSelectViewPager.adapter = PhotoSelectViewPagerAdapter(context, fragmentManager)
+        photoSelectViewPager.adapter = PhotoSelectViewPagerAdapter(context, childFragmentManager)
         photoTabLayout.setupWithViewPager(photoSelectViewPager)
         photoSelectViewPager.isNestedScrollingEnabled = false
 

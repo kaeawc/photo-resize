@@ -6,7 +6,7 @@ import org.junit.Test
 class CropPercentagesTest {
 
     @Test
-    fun `addition is correct`() {
+    fun asdf() {
         assertEquals(4, (2 + 2).toLong())
     }
 }

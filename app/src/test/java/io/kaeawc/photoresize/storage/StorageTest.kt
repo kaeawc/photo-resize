@@ -6,7 +6,7 @@ import org.junit.Test
 class StorageTest {
 
     @Test
-    fun `addition is correct`() {
+    fun asdfasdf() {
         Assert.assertEquals(4, (2 + 2).toLong())
     }
 }

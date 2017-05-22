@@ -2,9 +2,9 @@
 
 buildscript {
     ext.kotlin_version = "1.1.2-4"
-    ext.build_tools_version = "25.0.2"
 
     repositories {
+        maven { url 'https://maven.google.com' }
         jcenter()
     }
     dependencies {
@@ -16,6 +16,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
         maven { url "https://jitpack.io" }
     }
 }
@@ -24,7 +26,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-String supportLibraryVersion = "25.3.1"
+String supportLibraryVersion = "26.0.0-beta1"
 String constraintLayoutVersion = "1.0.2"
 String timberVersion = "4.5.1"
 String okhttpVersion = "3.8.0"

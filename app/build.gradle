@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 'android-O'
+    buildToolsVersion "26.0.0-rc2"
 
     defaultConfig {
         applicationId "io.kaeawc.photoresize"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 'O'
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -41,6 +41,16 @@ android {
         checkReleaseBuilds false
         absolutePaths false
         checkAllWarnings true
+    }
+
+    task copyTestClasses(type: Copy) {
+        from "build/tmp/kotlin-classes/debugUnitTest"
+        into "build/intermediates/classes/debug"
+    }
+
+    task copySdkClasses(type: Copy) {
+        from "build/tmp/kotlin-classes/debug"
+        into "build/intermediates/classes/debug"
     }
 }
 
